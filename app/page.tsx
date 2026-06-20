@@ -12,8 +12,9 @@ export default async function Home() {
     <div>
         {/* Hero Carousel */}
         <TrendingAllWeek />
-
+          <div className="">
         <NowPlaying nowPlaying={nowPlaying.results} />
+          </div>
     </div>
     
     </main>

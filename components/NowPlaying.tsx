@@ -2,6 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface nowPlayingData {
   id: number;
@@ -98,10 +99,12 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
           className="flex space-x-4 overflow-x-scroll scrollbar-none scroll-smooth pb-12 pt-4 overflow-visible"
         >
           {nowPlaying.map((movie, index) => (
+          <Link href={`/movie/${movie.id}`} className="flex space-x-5">
             <div
               key={movie.id}
               className="flex-none w-[135px] sm:w-[175px] lg:w-[200px] aspect-[2/3] relative group/card overflow-visible"
             >
+              
               {/* Dynamic Hover Card Inner Layout Container */}
               <div 
                 className={`absolute inset-0 bg-slate-900 rounded-lg overflow-hidden border border-slate-800 shadow-lg
@@ -162,6 +165,7 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
 
               </div>
             </div>
+          </Link>
           ))}
         </div>
 
