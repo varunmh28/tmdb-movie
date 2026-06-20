@@ -19,4 +19,18 @@ export async function getTrendingAllWeek() {
     return res.json();
   }
 
+
+  export async function getNowPlaying() {
+    const res = await fetch(
+      `${BASE_URL}/movie/now_playing`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
   
