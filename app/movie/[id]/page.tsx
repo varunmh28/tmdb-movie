@@ -29,7 +29,7 @@ export default async function MovieDetailPage({ params }: PageProps) {
  const discoverList = discoverData?.results || [];
 
  // 3. Match the number from the URL against your array objects
- const movieDiscover = discoverList.find((movie: MovieDetails) => movie.id === Number(id));
+ const movieDiscover = discoverList.find((movie: MovieDetails) => movie.id === Number(id)); // Number(id) is from params
 
   // 3. Fallback state safety handler if matching item isn't located
   if (!movieDiscover) {
