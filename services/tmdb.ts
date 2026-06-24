@@ -51,4 +51,18 @@ export async function getTrendingAllWeek() {
   }
 
 
+    //all movies
+    export async function getAllMovies(id: string | number) {
+      const res = await fetch(
+        `${BASE_URL}/movie/${id}`,
+        options
+      );
+  
+      if (!res.ok) {
+          throw new Error(`TMDB API failed with status: ${res.status}`);
+        }
+    
+      return res.json();
+    }
+
   

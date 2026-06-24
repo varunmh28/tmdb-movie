@@ -58,7 +58,7 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
       
       {/* Row Title */}
       <h2 className="text-xl sm:text-2xl font-bold text-white tracking-wide transition-colors duration-200 hover:text-amber-500 cursor-pointer inline-block">
-        Now Playing
+        In Theatres
       </h2>
 
       {/* Row Container wrapper */}
@@ -99,9 +99,9 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
           className="flex space-x-4 overflow-x-scroll scrollbar-none scroll-smooth pb-12 pt-4 overflow-visible"
         >
           {nowPlaying.map((movie, index) => (
-          <Link href={`/movie/${movie.id}`} className="flex space-x-5">
+          <Link key={movie.id} href={`/movie/${movie.id}`} className="flex space-x-5">
             <div
-              key={movie.id}
+              
               className="flex-none w-[135px] sm:w-[175px] lg:w-[200px] aspect-[2/3] relative group/card overflow-visible"
             >
               

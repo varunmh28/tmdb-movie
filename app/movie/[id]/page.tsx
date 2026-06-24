@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getDiscoverMovies } from "@/services/tmdb";
+import { getAllMovies } from "@/services/tmdb";
 
 interface MovieDetails {
   id: number;
@@ -22,20 +22,14 @@ interface PageProps {
 export default async function MovieDetailPage({ params }: PageProps) {
   const { id } = await params;
 
- // 1. Fetch the complete discovered data object
- const discoverData = await getDiscoverMovies();
+  // 1. Fetch the exact movie data object directly using the ID
+  const movieDiscover: MovieDetails = await getAllMovies(id);
 
- // 2. Extract the array from the .results property, default to an empty array fallback
- const discoverList = discoverData?.results || [];
-
- // 3. Match the number from the URL against your array objects
- const movieDiscover = discoverList.find((movie: MovieDetails) => movie.id === Number(id)); // Number(id) is from params
-
-  // 3. Fallback state safety handler if matching item isn't located
-  if (!movieDiscover) {
+  // 2. Fallback check if TMDB couldn't find this specific movie ID
+  if (!movieDiscover || !movieDiscover.title) {
     return (
       <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center">
-        <p>Movie asset not found in discovery bank.</p>
+        <p>Movie asset not found.</p>
       </div>
     );
   }
