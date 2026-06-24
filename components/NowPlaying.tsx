@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface nowPlayingData {
-  id: number;
+  id: string;
   title: string;
   poster_path: string | null;
   release_date: string;

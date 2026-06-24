@@ -8,10 +8,11 @@ import { Autoplay, Pagination } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import Link from "next/link";
 
 // Define TypeScript layout for TMDB properties
 interface trendingAllData {
-  id: number;
+  id: string;
   title?: string;
   name?: string;       // FIXED: TMDB uses 'name' for TV items
   media_type?: string; 
@@ -78,7 +79,8 @@ export default function HeroCarousel({ trending }: trendingAllProps) {
                     <span className="bg-amber-500 text-slate-950 px-2 py-0.5 rounded font-bold">
                       ★ {data.vote_average ? data.vote_average.toFixed(1) : "0.0"}
                     </span>
-                    <span className="text-gray-300">{releaseYear}</span>
+                    {/* <span className="text-gray-300">{releaseYear}</span> */}
+                    <span className="text-gray-300">{data.media_type?.toUpperCase()}</span>
                   </div>
 
                   {/* Movie/TV Title */}
@@ -98,7 +100,7 @@ export default function HeroCarousel({ trending }: trendingAllProps) {
                       Play Trailer
                     </button>
                     <button className="flex-1 sm:flex-none bg-slate-800/80 hover:bg-slate-700 text-white font-semibold px-6 py-2.5 rounded border border-slate-700 transition duration-200 text-sm sm:text-base backdrop-blur-sm">
-                      More Info
+                     <Link href= {`/${data.media_type}/${data.id}`}> More Info </Link>
                     </button>
                   </div>
 
