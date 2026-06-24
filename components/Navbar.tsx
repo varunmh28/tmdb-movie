@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Movies", href: "/movies" },
+    { name: "Movies", href: "/movie" },
     { name: "TV Shows", href: "/tv-shows" },
     { name: "Wishlist", href: "/wishlist" },
     { name: "Favourites", href: "/favourites" },

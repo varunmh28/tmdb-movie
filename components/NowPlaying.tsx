@@ -10,6 +10,7 @@ interface nowPlayingData {
   poster_path: string | null;
   release_date: string;
   vote_average: number;
+  media_type?: string; // Added to capture format dynamically if present
 }
 
 interface nowPlayingProps {
@@ -69,9 +70,6 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
           <button
             onClick={() => handleScroll("left")}
             className="absolute left-2 top-[40%] -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 bg-slate-950/80 border border-slate-800 hover:border-amber-500 text-white z-50 rounded-full transition-all duration-300 flex items-center justify-center backdrop-blur-md shadow-lg shadow-black/50 hover:scale-110 active:scale-95 opacity-100 md:opacity-0 md:group-hover:opacity-100"
-            /* 📱 RESPONSIVENESS TRIGGER: Removed `hidden md:flex` so it renders on mobile. 
-               `opacity-100 md:opacity-0 md:group-hover:opacity-100` ensures it's instantly visible on mobile touchscreens, 
-               but remains hidden on desktop until mouse hover. */
             aria-label="Scroll Left"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="w-4 h-4 sm:w-5 sm:h-5 text-gray-200 hover:text-amber-400 transition-colors">
@@ -99,9 +97,8 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
           className="flex space-x-4 overflow-x-scroll scrollbar-none scroll-smooth pb-12 pt-4 overflow-visible"
         >
           {nowPlaying.map((movie, index) => (
-          <Link key={movie.id} href={`/movie/${movie.id}`} className="flex space-x-5">
+          <Link key={movie.id} href={`/movie/${movie.id}`} className="flex flex-col space-y-2 group/item">
             <div
-              
               className="flex-none w-[135px] sm:w-[175px] lg:w-[200px] aspect-[2/3] relative group/card overflow-visible"
             >
               
@@ -165,6 +162,19 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
 
               </div>
             </div>
+
+            {/* STATIC CARD METADATA BLOCK (As shown in your reference image) */}
+            <div className="px-1 pt-1 w-[135px] sm:w-[175px] lg:w-[200px] transition-opacity duration-200 group-hover/card:opacity-0">
+              <h3 className="text-sm font-bold text-neutral-100 truncate group-hover/item:text-amber-500 transition-colors">
+                {movie.title}
+              </h3>
+              <div className="flex items-center space-x-1.5 text-xs text-neutral-500 font-medium mt-0.5">
+                <span className="capitalize">{movie.media_type || "Movie"}</span>
+                <span>•</span>
+                <span>{movie.release_date ? movie.release_date.split("-")[0] : "N/A"}</span>
+              </div>
+            </div>
+
           </Link>
           ))}
         </div>
