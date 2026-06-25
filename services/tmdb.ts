@@ -329,3 +329,21 @@ export async function getTVRecommendations(id: string) {
     
       return res.json();
     }
+
+
+
+
+    // SEARCH /////
+
+    export async function getSearchMulti(query: string , page: number=1) {
+      const res = await fetch(
+        `${BASE_URL}/search/multi?include_adult=false&language=en-US&page=${page}&query=${query}`,
+        options
+      );
+  
+      if (!res.ok) {
+          throw new Error(`TMDB API failed with status: ${res.status}`);
+        }
+    
+      return res.json();
+    }
