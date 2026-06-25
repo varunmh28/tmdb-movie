@@ -44,7 +44,7 @@ export default function Navbar() {
           {/* Logo / Name */}
           <div className="flex-shrink-0">
             <Link href="/" className="text-xl font-bold tracking-wide bg-gradient-to-r from-red-500 to-amber-500 bg-clip-text text-transparent">
-              Movies&Shows
+              StreamBase
             </Link>
           </div>
 

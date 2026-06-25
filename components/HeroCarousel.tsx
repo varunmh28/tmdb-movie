@@ -97,7 +97,7 @@ export default function HeroCarousel({ trending }: trendingAllProps) {
                   {/* Action Buttons */}
                   <div className="flex items-center space-x-4 pt-2">
                     <button className="flex-1 sm:flex-none bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded transition duration-200 text-sm sm:text-base">
-                      Play Trailer
+                    ▶ Play Now 
                     </button>
                     <button className="flex-1 sm:flex-none bg-slate-800/80 hover:bg-slate-700 text-white font-semibold px-6 py-2.5 rounded border border-slate-700 transition duration-200 text-sm sm:text-base backdrop-blur-sm">
                      <Link href= {`/${data.media_type}/${data.id}`}> More Info </Link>
