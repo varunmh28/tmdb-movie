@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getAllMovies, getMovieCredits} from "@/services/tmdb";
+// Added placeholder import name for recommendations fetcher
+import { getAllMovies, getMovieCredits, getMovieRecommendations } from "@/services/tmdb";
 
 interface MovieDetails {
   id: number;
@@ -22,6 +23,14 @@ interface CastMember {
   profile_path: string | null;
 }
 
+interface RecommendationItem {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  release_date?: string;
+  vote_average: number;
+}
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -29,10 +38,11 @@ interface PageProps {
 export default async function MovieDetailPage({ params }: PageProps) {
   const { id } = await params;
 
-  // Fetch both datasets concurrently on the server
-  const [movieDiscover, creditsData] = await Promise.all([
+  // Fetch all datasets concurrently on the server
+  const [movieDiscover, creditsData, recommendationsData] = await Promise.all([
     getAllMovies(id),
     getMovieCredits(id),
+    getMovieRecommendations(id), // Call your recommendations API wrapper
   ]);
 
   if (!movieDiscover || !movieDiscover.title) {
@@ -47,19 +57,19 @@ export default async function MovieDetailPage({ params }: PageProps) {
   const posterUrl = movieDiscover.poster_path ? `https://image.tmdb.org/t/p/w500${movieDiscover.poster_path}` : null;
   const releaseYear = movieDiscover.release_date ? movieDiscover.release_date.split("-")[0] : "N/A";
   
-  // Grab up to 30 actors to make full use of the new wide bottom layout
   const cast: CastMember[] = creditsData.cast || [];
+  // Handle results envelope mapping for recommendation listings
+  const recommendations: RecommendationItem[] = recommendationsData?.results || recommendationsData || [];
 
-  // Placeholder variables ready for future integration
-  const runtime = "Placeholder (e.g., 120 min)";
-  const releaseFullDate = movieDiscover.release_date || "Placeholder Date";
+  const runtime = movieDiscover.runtime || "N/A" ;
+  const releaseFullDate = movieDiscover.release_date || "N/A";
   const director = creditsData.crew
-  ? creditsData.crew
-      .filter((member: { job: string }) => member.job === "Director")
-      .map((d: { name: string }) => d.name)
-      .join(", ") || "Unknown Director"
-  : "Unknown Director";
-  const streamingOn = "Placeholder Platform";
+    ? creditsData.crew
+        .filter((member: { job: string }) => member.job === "Director")
+        .map((d: { name: string }) => d.name)
+        .join(", ") || "Unknown Director"
+    : "Unknown Director";
+  const Revenue = movieDiscover.revenue ? movieDiscover.revenue.toLocaleString() : "N/A";
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white relative overflow-x-hidden font-sans">
@@ -144,7 +154,9 @@ export default async function MovieDetailPage({ params }: PageProps) {
               <div className="w-full lg:w-72 bg-neutral-900/80 border border-neutral-800 rounded-xl p-4 space-y-3 shadow-lg backdrop-blur-sm flex-none">
                 <div>
                   <span className="text-xs text-neutral-500 block uppercase tracking-wider font-semibold">Runtime</span>
-                  <span className="text-sm text-neutral-200 font-medium">{runtime}</span>
+                  <span className="text-sm text-neutral-200 font-medium">
+                    {runtime !== "N/A" ? `${Math.floor(runtime / 60)}hr ${runtime % 60}m` : "N/A"}
+                  </span>
                 </div>
                 <div className="border-t border-neutral-800/60 pt-2">
                   <span className="text-xs text-neutral-500 block uppercase tracking-wider font-semibold">Release Date</span>
@@ -155,8 +167,10 @@ export default async function MovieDetailPage({ params }: PageProps) {
                   <span className="text-sm text-neutral-200 font-medium">{director}</span>
                 </div>
                 <div className="border-t border-neutral-800/60 pt-2">
-                  <span className="text-xs text-neutral-500 block uppercase tracking-wider font-semibold">Streaming On</span>
-                  <span className="text-sm text-amber-500 font-medium">{streamingOn}</span>
+                  <span className="text-xs text-neutral-500 block uppercase tracking-wider font-semibold">Revenue</span>
+                  <span className="text-sm text-amber-500 font-medium">
+                    {Revenue !== "N/A" ? `$${Revenue}` : "N/A"}
+                  </span>
                 </div>
               </div>
 
@@ -165,52 +179,105 @@ export default async function MovieDetailPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* 3. FULL WIDTH CAST ROWS SECTION (Now entirely below the top structure layout block) */}
+        {/* 3. FULL WIDTH CAST ROWS SECTION */}
         {cast.length > 0 && (
-          <div className="pt-10 mt-12 border-t border-neutral-900 w-full overflow-hidden">
-            <h2 className="text-xl font-bold text-white mb-6 tracking-wide">Cast</h2>
+  <div className="pt-10 mt-12 border-t border-neutral-900 w-full overflow-hidden">
+    <h2 className="text-xl font-bold text-white mb-6 tracking-wide">Cast</h2>
+    
+    {/* Added negative margin and matching internal padding here */}
+    <div className="flex space-x-6 overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8
+      [&::-webkit-scrollbar]:h-1.5 
+      [&::-webkit-scrollbar-track]:bg-neutral-900/40 
+      [&::-webkit-scrollbar-track]:rounded-full
+      [&::-webkit-scrollbar-thumb]:bg-white 
+      [&::-webkit-scrollbar-thumb]:rounded-full 
+      hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200 
+      transition-colors"
+    >
+      {cast.slice(0, 25).map((actor) => (
+        /* Changed w-28 to w-32 to match your image size */
+        <div key={actor.id} className="flex flex-col items-center text-center space-y-2 w-32 flex-none group">
+          
+          {/* Round Profile Image Wrapper - Width fixed and centered layout */}
+          <div className="w-32 h-32 rounded-full overflow-hidden relative border border-neutral-800 shadow-md bg-neutral-900 group-hover:border-neutral-700 transition duration-200 flex items-center justify-center">
+            {actor.profile_path ? (
+              <Image
+                src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                alt={actor.name}
+                fill
+                className="object-cover object-top scale-100 group-hover:scale-105 transition duration-200"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-neutral-600 bg-neutral-900">
+                <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/>
+                </svg>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-0.5 px-1">
+            <p className="text-sm font-medium text-neutral-200 line-clamp-1 group-hover:text-white transition">
+              {actor.name}
+            </p>
+            <p className="text-xs text-neutral-500 line-clamp-1 font-normal">
+              {actor.character}
+            </p>
+          </div>
+
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+        {/* 4. RECOMMENDATIONS GRID SECTION */}
+        {recommendations.length > 0 && (
+          <div className="pt-10 mt-12 border-t border-neutral-900 w-full">
+            <h2 className="text-xl font-bold text-white mb-6 tracking-wide">More Like This</h2>
             
-            {/* Extended Horizontal Scrollable Container Rail */}
-            <div className="flex space-x-6 overflow-x-auto pb-4 [&::-webkit-scrollbar]:h-1.5 
-  [&::-webkit-scrollbar-track]:bg-neutral-900/40 
-  [&::-webkit-scrollbar-track]:rounded-full
-  [&::-webkit-scrollbar-thumb]:bg-white 
-  [&::-webkit-scrollbar-thumb]:rounded-full 
-  hover:[&::-webkit-scrollbar-thumb]:bg-neutral-200 
-  transition-colors">
-              {cast.slice(0, 25).map((actor) => (
-                <div key={actor.id} className="flex flex-col items-center text-center space-y-2 w-28 flex-none group">
-                  
-                  {/* Round Profile Image Wrapper */}
-                  <div className="w-30 h-30 rounded-full overflow-hidden relative border border-neutral-800 shadow-md bg-neutral-900 group-hover:border-neutral-700 transition duration-200">
-                    {actor.profile_path ? (
-                      <Image
-                        src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
-                        alt={actor.name}
-                        fill
-                        className="object-cover object-top scale-100 group-hover:scale-105 transition duration-200"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-neutral-600 bg-neutral-900">
-                        <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z"/>
-                        </svg>
-                      </div>
-                    )}
-                  </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {recommendations.slice(0, 12).map((item) => {
+                const recYear = item.release_date ? item.release_date.split("-")[0] : "N/A";
+                
+                return (
+                  <Link 
+                    key={item.id} 
+                    href={`/movie/${item.id}`}
+                    className="flex flex-col space-y-2 group bg-neutral-900/40 p-2 rounded-xl border border-neutral-900 hover:border-neutral-800 transition duration-200"
+                  >
+                    <div className="aspect-[2/3] w-full relative bg-neutral-900 rounded-lg overflow-hidden shadow-inner border border-neutral-800/40">
+                      {item.poster_path ? (
+                        <Image
+                          src={`https://image.tmdb.org/t/p/w342${item.poster_path}`}
+                          alt={item.title}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 200px"
+                          className="object-cover group-hover:scale-[1.02] transition duration-300 ease-out"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-xs text-neutral-500 p-2 text-center">
+                          {item.title}
+                        </div>
+                      )}
+                      
+                      {item.vote_average > 0 && (
+                        <div className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-bold text-amber-500 flex items-center space-x-0.5 shadow">
+                          <span>★</span>
+                          <span>{item.vote_average.toFixed(1)}</span>
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Name Layout Labels */}
-                  <div className="space-y-0.5 px-1">
-                    <p className="text-sm font-medium text-neutral-200 line-clamp-1 group-hover:text-white transition">
-                      {actor.name}
-                    </p>
-                    <p className="text-xs text-neutral-500 line-clamp-1 font-normal">
-                      {actor.character}
-                    </p>
-                  </div>
-
-                </div>
-              ))}
+                    <div className="px-1 min-w-0">
+                      <h3 className="text-sm font-bold text-neutral-200 truncate group-hover:text-amber-500 transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-neutral-500 mt-0.5 font-medium">{recYear}</p>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}

@@ -157,7 +157,7 @@ export default function TopRatedRow() {
             const displayYear = rawDate ? rawDate.split("-")[0] : "N/A";
 
             return (
-              <Link key={item.id} href={`/movie/${item.id}`} className="flex flex-col space-y-2 group/item">
+              <Link key={item.id} href={`/${activeType}/${item.id}`} className="flex flex-col space-y-2 group/item">
                 <div className="flex-none w-[135px] sm:w-[175px] lg:w-[200px] aspect-[2/3] relative group/card overflow-visible">
                   <div 
                     className={`absolute inset-0 bg-slate-900 rounded-lg overflow-hidden border border-slate-800 shadow-lg

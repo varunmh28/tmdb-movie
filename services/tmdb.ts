@@ -167,6 +167,20 @@ export async function getTopRatedMoviesHome() {
   return res.json();
 }
 
+//movie reccommendations
+export async function getMovieRecommendations(id: string) {
+  const res = await fetch(
+    `${BASE_URL}/movie/${id}/recommendations`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}
+
 
 
 
