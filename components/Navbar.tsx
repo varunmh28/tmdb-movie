@@ -11,17 +11,26 @@ export default function Navbar() {
   const [mobileTvOpen, setMobileTvOpen] = useState(false);
   const pathname = usePathname();
 
-  const subOptions = [
+  // Submenu options exclusively for Movies
+  const movieSubOptions = [
     { name: "Popular", slug: "" },
     { name: "Now Playing", slug: "now-playing" },
     { name: "Upcoming", slug: "upcoming" },
     { name: "Top Rated", slug: "top-rated" },
   ];
 
+  // Custom submenu options exclusively for TV Shows
+  const tvSubOptions = [
+    { name: "Popular", slug: "" },
+    { name: "On The Air", slug: "on-the-air" },
+    { name: "Airing Today", slug: "airing-today" },
+    { name: "Top Rated", slug: "top-rated" },
+  ];
+
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Movies", href: "/movie", subMenu: subOptions },
-    { name: "TV Shows", href: "/tv-shows", subMenu: subOptions },
+    { name: "Movies", href: "/movie", subMenu: movieSubOptions },
+    { name: "TV Shows", href: "/tv", subMenu: tvSubOptions },
     { name: "Wishlist", href: "/wishlist" },
     { name: "Favourites", href: "/favourites" },
   ];
@@ -65,11 +74,11 @@ export default function Navbar() {
                       <div className="absolute left-0 top-full mt-1 w-48 bg-white text-slate-900 rounded-md shadow-xl opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50 border border-slate-100 origin-top-left">
                         <div className="py-1">
                           {link.subMenu.map((sub) => {
-                            const subHref = `${link.href}/${sub.slug}`;
+                            const subHref = sub.slug ? `${link.href}/${sub.slug}` : link.href;
                             const isSubActive = pathname === subHref;
                             return (
                               <Link
-                                key={sub.slug}
+                                key={sub.slug || "popular"}
                                 href={subHref}
                                 className={`block px-4 py-2.5 text-sm font-medium transition-colors ${
                                   isSubActive 
@@ -151,11 +160,11 @@ export default function Navbar() {
                     {isSubMenuOpen && (
                       <div className="pl-4 space-y-1 bg-slate-950/40 rounded-md py-1">
                         {link.subMenu.map((sub) => {
-                          const subHref = `${link.href}/${sub.slug}`;
+                          const subHref = sub.slug ? `${link.href}/${sub.slug}` : link.href;
                           const isSubActive = pathname === subHref;
                           return (
                             <Link
-                              key={sub.slug}
+                              key={sub.slug || "popular"}
                               href={subHref}
                               onClick={() => setIsOpen(false)}
                               className={`block px-3 py-2 rounded-md text-sm font-medium ${
