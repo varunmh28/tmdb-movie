@@ -124,3 +124,17 @@ export async function getTrendingAllWeek() {
     return res.json();
   }
 
+
+   //movie credits
+   export async function getMovieCredits(id: string) {
+    const res = await fetch(
+      `${BASE_URL}/movie/${id}/credits`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
