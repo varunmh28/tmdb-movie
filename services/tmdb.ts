@@ -138,3 +138,38 @@ export async function getTrendingAllWeek() {
   
     return res.json();
   }
+
+  //popular movies
+  export async function getPopularMovieshome() {
+    const res = await fetch(
+      `${BASE_URL}/movie/popular`,
+      options
+    );
+  
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
+
+
+
+
+//   TV    ////// 
+
+// popular tv 
+
+export async function getPopularTV() {
+  const res = await fetch(
+    `${BASE_URL}/tv/popular`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}

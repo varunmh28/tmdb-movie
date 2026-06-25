@@ -1,11 +1,15 @@
+
 import TrendingAllWeek from "@/server/trendingAllWeek";
 import HeroCarousel from "@/components/HeroCarousel";
 import Image from "next/image";
 import NowPlaying from "@/components/NowPlaying";
-import { getNowPlaying } from "@/services/tmdb";
+import { getNowPlaying, getPopularMovieshome } from "@/services/tmdb";
+import PopularRow from "@/components/popular";
+
 
 export default async function Home() {
   const nowPlaying = await getNowPlaying()
+
   return (
     <main className="min-h-screen bg-black">
 
@@ -14,6 +18,11 @@ export default async function Home() {
         <TrendingAllWeek />
           <div className="">
         <NowPlaying nowPlaying={nowPlaying.results} />
+
+
+        {/* Popular Movies and TV  */}
+          <PopularRow />
+
           </div>
     </div>
     
