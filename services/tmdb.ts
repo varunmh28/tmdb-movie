@@ -2,7 +2,7 @@ const BASE_URL = "https://api.themoviedb.org/3"
 
 const options = {
     headers:{
-        Authorization: `Bearer ${process.env.API_ACCESS_TOKEN}`
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_ACCESS_TOKEN}`
     }
 }
 
@@ -65,4 +65,18 @@ export async function getTrendingAllWeek() {
       return res.json();
     }
 
+
+   //popular movies
+   export async function getPopularMovies(page: number) {
+    const res = await fetch(
+      `${BASE_URL}/movie/popular?language=en-US&page=${page}`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
   

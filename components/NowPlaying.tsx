@@ -105,8 +105,8 @@ export default function MovieRow({ nowPlaying }: nowPlayingProps) {
               {/* Dynamic Hover Card Inner Layout Container */}
               <div 
                 className={`absolute inset-0 bg-slate-900 rounded-lg overflow-hidden border border-slate-800 shadow-lg
-                  md:group-hover/card:scale-125 md:group-hover/card:-translate-y-4 md:group-hover/card:z-40 
-                  transition-all duration-300 ease-out md:group-hover/card:shadow-2xl md:group-hover/card:shadow-black/80 md:group-hover/card:border-slate-700
+                  md:group-hover/card:z-40 md:group-hover/card:border-white
+                  transition-all duration-300 ease-out md:group-hover/card:shadow-2xl md:group-hover/card:shadow-black/80
                   ${index === 0 ? 'origin-left' : index === nowPlaying.length - 1 ? 'origin-right' : 'origin-center'}
                 `}
               >
