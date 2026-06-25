@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Card from "@/components/Card";
 import { getSearchMulti } from "@/services/tmdb";
@@ -14,7 +14,8 @@ interface SearchItem {
   vote_average: number;
 }
 
-export default function SearchPage() {
+// Inner component that handles search execution and searchParams safely
+function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -126,5 +127,20 @@ export default function SearchPage() {
         )}
       </main>
     </div>
+  );
+}
+
+// Default export wrapper that handles static prerendering safely via Suspense
+export default function SearchPage() {
+  return (
+    <Suspense 
+      fallback={
+        <div style={{ minHeight: '100vh', backgroundColor: '#020617', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <p style={{ color: '#a1a1aa', fontSize: '16px' }}>Loading workspace...</p>
+        </div>
+      }
+    >
+      <SearchContent />
+    </Suspense>
   );
 }
