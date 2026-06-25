@@ -12,7 +12,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const subOptions = [
-    { name: "Popular", slug: "popular" },
+    { name: "Popular", slug: "" },
     { name: "Now Playing", slug: "now-playing" },
     { name: "Upcoming", slug: "upcoming" },
     { name: "Top Rated", slug: "top-rated" },
