@@ -313,3 +313,19 @@ export async function getTVRecommendations(id: string) {
     
       return res.json();
     }
+
+
+  // top rated
+
+    export async function getTopRatedTVPage(page: number) {
+      const res = await fetch(
+        `${BASE_URL}/tv/top_rated?language=en-US&page=${page}`,
+        options
+      );
+  
+      if (!res.ok) {
+          throw new Error(`TMDB API failed with status: ${res.status}`);
+        }
+    
+      return res.json();
+    }
