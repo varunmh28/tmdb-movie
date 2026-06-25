@@ -183,6 +183,20 @@ export async function getMovieRecommendations(id: string) {
 
 
 
+export async function getMovieWatchProviders(id: string) {
+  const res = await fetch(
+    `${BASE_URL}/movie/${id}/watch/providers`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}
+
+
 
 //   TV    ////// 
 
@@ -206,6 +220,48 @@ export async function getPopularTV() {
 export async function getTopRatedTVHome() {
   const res = await fetch(
     `${BASE_URL}/tv/top_rated`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}
+
+// all tv series
+export async function getAllTV(id: string) {
+  const res = await fetch(
+    `${BASE_URL}/tv/${id}`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}
+
+//  tv credits - cast 
+export async function getTVCredits(id: string) {
+  const res = await fetch(
+    `${BASE_URL}/tv/${id}/credits`,
+    options
+  );
+
+  if (!res.ok) {
+      throw new Error(`TMDB API failed with status: ${res.status}`);
+    }
+
+  return res.json();
+}
+
+// tv recommendations
+export async function getTVRecommendations(id: string) {
+  const res = await fetch(
+    `${BASE_URL}/tv/${id}/recommendations`,
     options
   );
 
