@@ -31,8 +31,9 @@ export default function Navbar() {
     { name: "Home", href: "/" },
     { name: "Movies", href: "/movie", subMenu: movieSubOptions },
     { name: "TV Shows", href: "/tv", subMenu: tvSubOptions },
-    { name: "Wishlist", href: "/wishlist" },
-    { name: "Favourites", href: "/favourites" },
+    // { name: "Wishlist", href: "/wishlist" },
+    // { name: "Favourites", href: "/favourites" },
+    {name:"Search 🔎", href:"/search"}
   ];
 
   return (
