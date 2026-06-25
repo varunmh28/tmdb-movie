@@ -271,3 +271,45 @@ export async function getTVRecommendations(id: string) {
 
   return res.json();
 }
+
+//popular tv 
+   export async function getPopularTVPage(page: number) {
+    const res = await fetch(
+      `${BASE_URL}/tv/popular?language=en-US&page=${page}`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
+  //on the air tv 
+  export async function getOnTheAirPage(page: number) {
+    const res = await fetch(
+      `${BASE_URL}/tv/on_the_air?language=en-US&page=${page}`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
+    //airing today
+    export async function getAiringToday(page: number) {
+      const res = await fetch(
+        `${BASE_URL}/tv/airing_today?language=en-US&page=${page}`,
+        options
+      );
+  
+      if (!res.ok) {
+          throw new Error(`TMDB API failed with status: ${res.status}`);
+        }
+    
+      return res.json();
+    }
