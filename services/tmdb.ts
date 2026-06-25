@@ -95,3 +95,32 @@ export async function getTrendingAllWeek() {
     return res.json();
   }
 
+
+  //Upcoming Movies
+  export async function getUpcomingMoviesPage(page: number) {
+    const res = await fetch(
+      `${BASE_URL}/movie/upcoming?language=en-US&page=${page}`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
+  //top rated movies
+  export async function getTopRatedMoviesPage(page: number) {
+    const res = await fetch(
+      `${BASE_URL}/movie/top_rated?language=en-US&page=${page}`,
+      options
+    );
+
+    if (!res.ok) {
+        throw new Error(`TMDB API failed with status: ${res.status}`);
+      }
+  
+    return res.json();
+  }
+
