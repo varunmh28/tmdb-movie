@@ -5,6 +5,7 @@ import Image from "next/image";
 import NowPlaying from "@/components/NowPlaying";
 import { getNowPlaying, getPopularMovieshome } from "@/services/tmdb";
 import PopularRow from "@/components/popular";
+import TopRatedRow from "@/components/top-rated";
 
 
 export default async function Home() {
@@ -23,6 +24,13 @@ export default async function Home() {
         {/* Popular Movies and TV  */}
           <PopularRow />
 
+
+        {/* Top Rated Movies and TV */}
+        <TopRatedRow />
+
+
+
+        
           </div>
     </div>
     
