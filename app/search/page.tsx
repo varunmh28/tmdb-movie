@@ -60,7 +60,7 @@ function SearchContent() {
   }, [query, router]);
 
   return (
-    <div style={{ paddingTop: '20px', paddingLeft: '40px', minHeight: '100vh', backgroundColor: '#020617', color: 'white' }}>
+    <div style={{ paddingTop: '20px', paddingLeft: '8px', minHeight: '100vh', backgroundColor: '#020617', color: 'white' }}>
       <div style={{ marginBottom: '40px' }}>
         <input 
           type="text" 
@@ -68,7 +68,7 @@ function SearchContent() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           style={{
-            width: '100%',
+            width: '98%',
             maxWidth: '600px',
             backgroundColor: '#18181b',
             border: '1px solid #27272a',
@@ -76,7 +76,8 @@ function SearchContent() {
             borderRadius: '12px',
             padding: '16px',
             fontSize: '18px',
-            outline: 'none'
+            outline: 'none',
+            borderColor:'#FF890A'
           }}
         />
       </div>
